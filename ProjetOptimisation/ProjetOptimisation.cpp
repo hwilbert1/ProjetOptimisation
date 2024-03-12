@@ -14,33 +14,32 @@ float GetElevAv(int DebitTotal)
 float GetP1(float ChuteNette, int DebitEntrant)
 {
     float outs = 20.316 - 0.12 * DebitEntrant - 0.588 * ChuteNette - 0.0004 * DebitEntrant * DebitEntrant + 0.014 * DebitEntrant * ChuteNette;
-    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
+    return outs;
 }
 
 float GetP2(float ChuteNette, int DebitEntrant)
 {
     float outs = 16.1 - 0.223 * DebitEntrant - 0.465 * ChuteNette - 0.0001 * DebitEntrant * DebitEntrant + 0.016 * DebitEntrant * ChuteNette;
-    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
+    return outs;
 }
 float GetP3(float ChuteNette, int DebitEntrant)
 {
     float outs = 10.67 - 0.0009 * DebitEntrant - 0.3090 * ChuteNette -0.0005  * DebitEntrant * DebitEntrant + 0.0109 * DebitEntrant * ChuteNette;
-    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
+    return outs;
 }
 float GetP4(float ChuteNette, int DebitEntrant)
 {
     float outs = 19.6112 - 0.4494 * DebitEntrant - 0.5603 * ChuteNette + 0.0049 * DebitEntrant * DebitEntrant + 0.0112 * DebitEntrant * ChuteNette - 0.0000189 * DebitEntrant * DebitEntrant * DebitEntrant + 0.00001476 * DebitEntrant * DebitEntrant * ChuteNette;
-    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
+    return outs;
 }
 float GetP5(float ChuteNette, int DebitEntrant)
 {
     float outs = 12.601 - 0.046 * DebitEntrant - 0.363 * ChuteNette - 0.0005 * DebitEntrant * DebitEntrant + 0.013 * DebitEntrant * ChuteNette;
-    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
+    return outs;
 }
 
 int main()
 {
-    
 
     //paramètre en entrée d’un instance : débit à repartir, élévation en amont, limitation eventuelle pour chaque turbine
 
