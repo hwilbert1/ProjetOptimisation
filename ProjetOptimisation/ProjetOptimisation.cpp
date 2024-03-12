@@ -52,7 +52,9 @@ int main()
     int MaxQ4 = 0;
     int MaxQ5 = 0;
     
-    //set input, MaxQ >= 0
+
+    DebitTotal = std::atoi("string");
+
     DebitTotal = 578.005676269531;
     ElevAm = 137.899993896484;
 
@@ -61,7 +63,6 @@ int main()
     MaxQ3 = 0;
     MaxQ4 = 160;
     MaxQ5 = 160;
-
 
     float ElevAv = 0; //elevation aval
     int Step = 5; //increment de débit
@@ -255,7 +256,8 @@ int main()
     //std::cout << "\nmax (" << maxQ1 << " , " << maxP1 << ")\n";
     maxetape1 = std::pair<int, int>(maxQ1, maxP1);
     
-
+    std::cout << "total P " << maxP1 << "\n";
+    std::cout << "179,17\n";
     std::cout << "maxP1 " << GetP1(ChuteNette, MaxQ1) << "\tmaxQ1 "<< maxQ1 << "\n";
     
     int tempQ = DebitTotal - maxQ1;
