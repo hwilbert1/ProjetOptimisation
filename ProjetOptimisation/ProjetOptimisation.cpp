@@ -14,28 +14,28 @@ float GetElevAv(int DebitTotal)
 float GetP1(float ChuteNette, int DebitEntrant)
 {
     float outs = 20.316 - 0.12 * DebitEntrant - 0.588 * ChuteNette - 0.0004 * DebitEntrant * DebitEntrant + 0.014 * DebitEntrant * ChuteNette;
-    return outs;
+    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
 }
 
 float GetP2(float ChuteNette, int DebitEntrant)
 {
     float outs = 16.1 - 0.223 * DebitEntrant - 0.465 * ChuteNette - 0.0001 * DebitEntrant * DebitEntrant + 0.016 * DebitEntrant * ChuteNette;
-    return outs;
+    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
 }
 float GetP3(float ChuteNette, int DebitEntrant)
 {
     float outs = 10.67 - 0.0009 * DebitEntrant - 0.3090 * ChuteNette -0.0005  * DebitEntrant * DebitEntrant + 0.0109 * DebitEntrant * ChuteNette;
-    return outs;
+    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
 }
 float GetP4(float ChuteNette, int DebitEntrant)
 {
     float outs = 19.6112 - 0.4494 * DebitEntrant - 0.5603 * ChuteNette + 0.0049 * DebitEntrant * DebitEntrant + 0.0112 * DebitEntrant * ChuteNette - 0.0000189 * DebitEntrant * DebitEntrant * DebitEntrant + 0.00001476 * DebitEntrant * DebitEntrant * ChuteNette;
-    return outs;
+    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
 }
 float GetP5(float ChuteNette, int DebitEntrant)
 {
     float outs = 12.601 - 0.046 * DebitEntrant - 0.363 * ChuteNette - 0.0005 * DebitEntrant * DebitEntrant + 0.013 * DebitEntrant * ChuteNette;
-    return outs;
+    return outs - 0.5 * 0.0001 * DebitEntrant * DebitEntrant;
 }
 
 int main()
@@ -55,8 +55,8 @@ int main()
 
     DebitTotal = std::atoi("string");
 
-    DebitTotal = 578.005676269531;
-    ElevAm = 137.899993896484;
+    DebitTotal = 580.30;
+    ElevAm = 137.89;
 
     MaxQ1 = 160;
     MaxQ2 = 160;
@@ -78,19 +78,19 @@ int main()
     int Q2 = 0, P2 = 0;
     int Q1 = 0, P1 = 0;
 
-    std::map<int, int> etape5; //debit entrant (etat), puissance produite; pas de variable de décision car sortie = 0;
+    std::map<int, float> etape5; //debit entrant (etat), puissance produite; pas de variable de décision car sortie = 0;
 
-    std::map<int, std::map<int, int>> etape4; //debit entrant (etat), debit sortant selectionné (variable de decision), puissance produite;
-    std::map<int, std::pair<int, int>> maxetape4; //debit entrant, (debit sortant, puissance produite) tel que la puissante produite est maximale pour cet etat
+    std::map<int, std::map<int, float>> etape4; //debit entrant (etat), debit sortant selectionné (variable de decision), puissance produite;
+    std::map<int, std::pair<int, float>> maxetape4; //debit entrant, (debit sortant, puissance produite) tel que la puissante produite est maximale pour cet etat
     
-    std::map<int, std::map<int, int>> etape3;
-    std::map<int, std::pair<int, int>> maxetape3;
+    std::map<int, std::map<int, float>> etape3;
+    std::map<int, std::pair<int, float>> maxetape3;
     
-    std::map<int, std::map<int, int>> etape2;
-    std::map<int, std::pair<int, int>> maxetape2;
+    std::map<int, std::map<int, float>> etape2;
+    std::map<int, std::pair<int, float>> maxetape2;
     
-    std::map<int, int> etape1;//debit sortant selectionné (variable de decision), puissance produite; pas de debit entrant car debit entrant = min(DebitTotal, SommeMaximum)
-    std::pair<int, int> maxetape1;  
+    std::map<int, float> etape1;//debit sortant selectionné (variable de decision), puissance produite; pas de debit entrant car debit entrant = min(DebitTotal, SommeMaximum)
+    std::pair<int, float> maxetape1;
 
     
     int SommeMaximum = std::min(MaxDefault, MaxQ5);
@@ -112,12 +112,12 @@ int main()
     for (int i = 0; i <= maxetat; i = i + 5)
     {
         int maxQ = 0;
-        int maxP = 0;
+        float maxP = 0;
 
         //std::cout << i << " :\t";
         
         
-        std::map<int, int> possibilities;
+        std::map<int, float> possibilities;
         
         int mini = std::min(MaxQ4, i);
         int minj = std::max(i - PrevSommeMaximum, 0);
@@ -126,7 +126,7 @@ int main()
             {
              //   std::cout << "(" << j << " ";
 
-                int P4temp = GetP4(ChuteNette, j) + etape5.find(i - j)->second; //calcule la puissance resultante de cette variable de decision dans cet etat
+                float P4temp = GetP4(ChuteNette, j) + etape5.find(i - j)->second; //calcule la puissance resultante de cette variable de decision dans cet etat
 
               //  std::cout << P4temp << ")\t";
                 possibilities.emplace(j, P4temp);
@@ -140,7 +140,7 @@ int main()
         
         //std::cout << "\nmax (" << maxQ << " , " << maxP << ")\n";
 
-        maxetape4.emplace(i, std::pair<int, int>(maxQ, maxP));
+        maxetape4.emplace(i, std::pair<int, float>(maxQ, maxP));
         etape4.emplace(i, possibilities);
     }
     // ___________________________________________________________________________________________________________________________________________________
@@ -152,12 +152,12 @@ int main()
     for (int i = 0; i <= maxetat; i = i + 5)
     {
         int maxQ = 0;
-        int maxP = 0;
+        float maxP = 0;
 
         //std::cout << i << " :\t";
         
 
-        std::map<int, int> possibilities;
+        std::map<int, float> possibilities;
 
         int mini = std::min(MaxQ3, i);
         int minj = std::max(i - PrevSommeMaximum, 0);
@@ -166,7 +166,7 @@ int main()
         {
           //  std::cout << "(" << j << " ";
 
-            int P3temp = GetP3(ChuteNette, j) + maxetape4.find(i - j)->second.second; //calcule la puissance resultante de cette variable de decision dans cet etat
+            float P3temp = GetP3(ChuteNette, j) + maxetape4.find(i - j)->second.second; //calcule la puissance resultante de cette variable de decision dans cet etat
 
            // std::cout << P3temp << ")\t";
             possibilities.emplace(j, P3temp);
@@ -180,7 +180,7 @@ int main()
 
         //std::cout << "\nmax (" << maxQ << " , " << maxP << ")\n";
 
-        maxetape3.emplace(i, std::pair<int, int>(maxQ, maxP));
+        maxetape3.emplace(i, std::pair<int, float>(maxQ, maxP));
         etape3.emplace(i, possibilities);
     }
     // ___________________________________________________________________________________________________________________________________________________
@@ -192,12 +192,12 @@ int main()
     for (int i = 0; i <= maxetat; i = i + 5)
     {
         int maxQ = 0;
-        int maxP = 0;
+        float maxP = 0;
 
         
         //std::cout << i << " |\t";
 
-        std::map<int, int> possibilities;
+        std::map<int, float> possibilities;
 
         int mini = std::min(MaxQ2, i);
         int minj = std::max(i - PrevSommeMaximum, 0);
@@ -206,7 +206,7 @@ int main()
         {
           //  std::cout << "(" << j << " ";
 
-            int P2temp = GetP2(ChuteNette, j) + maxetape3.find(i - j)->second.second; //calcule la puissance resultante de cette variable de decision dans cet etat
+            float P2temp = GetP2(ChuteNette, j) + maxetape3.find(i - j)->second.second; //calcule la puissance resultante de cette variable de decision dans cet etat
 
            // std::cout << P2temp << ")\t";
             possibilities.emplace(j, P2temp);
@@ -220,7 +220,7 @@ int main()
 
       //  std::cout << "\nmax (" << maxQ << " , " << maxP << ")\n";
 
-        maxetape2.emplace(i, std::pair<int, int>(maxQ, maxP));
+        maxetape2.emplace(i, std::pair<int, float>(maxQ, maxP));
         etape2.emplace(i, possibilities);
     }
     // ___________________________________________________________________________________________________________________________________________________
@@ -232,7 +232,7 @@ int main()
     
     
     int maxQ1 = 0;
-    int maxP1 = 0;
+    float maxP1 = 0;
 
     //std::cout << Q1 << " |\t";
 
@@ -243,7 +243,7 @@ int main()
     {
        // std::cout << "(" << j << " ";
 
-        int P1temp = GetP1(ChuteNette, j) + maxetape2.find(Q1 - j)->second.second; //calcule la puissance resultante de cette variable de decision dans cet etat
+        float P1temp = GetP1(ChuteNette, j) + maxetape2.find(Q1 - j)->second.second; //calcule la puissance resultante de cette variable de decision dans cet etat
 
        // std::cout << P1temp << ")\t";
         etape1.emplace(j, P1temp);
@@ -254,7 +254,7 @@ int main()
         }
     }
     //std::cout << "\nmax (" << maxQ1 << " , " << maxP1 << ")\n";
-    maxetape1 = std::pair<int, int>(maxQ1, maxP1);
+    maxetape1 = std::pair<int, float>(maxQ1, maxP1);
     
     std::cout << "total P " << maxP1 << "\n";
     std::cout << "179,17\n";
