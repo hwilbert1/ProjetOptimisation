@@ -40,6 +40,67 @@ float GetP5(float ChuteNette, int DebitEntrant)
 
 int main()
 {
+    /*
+    
+        std::fstream myfile;
+    std::string line;
+
+    std::string filename = ".\\param.txt";
+
+    std::vector<std::string> content;
+    myfile.open(filename);
+    if (myfile.fail())
+    {
+        return 1;
+    }
+    while (!myfile.eof())
+    {
+        std::getline(myfile, line); // Check getline() doc, you can retrieve a line before/after a given string etc.
+        content.push_back(line);
+    }
+    myfile.close();
+
+    std::ofstream Outfile;
+    Outfile.open(filename);
+    if (Outfile.fail())
+    {
+        return 1;
+    }
+
+    double ElevAv = 137;
+    double DebitTot = 550;
+    double X1 = 160, X2 = 160, X3 = 160, X4 = 160, X5 = 160;
+
+    for (auto file_line : content)
+    {
+        if (file_line.find("test") != -1)
+        {
+            Outfile << "test " << "NewString2\n";
+        }
+        else if(file_line.find("X0") != -1)
+        {
+            Outfile << "X0(0 0 0 0 0 " << ElevAv << " " << DebitTot << ") " << "\n";
+        }
+        else if (file_line.find("LOWER_BOUND") != -1)
+        {
+            Outfile << "LOWER_BOUND(0 0 0 0 0 " << ElevAv << " " << DebitTot << ") " << "\n";
+        }
+        else if (file_line.find("UPPER_BOUND") != -1)
+        {
+            Outfile << "UPPER_BOUND(" << X1 << " " << X2 << " " << X3 << " " << X4 << " " << X5 << " " << ElevAv << " " << DebitTot << ") " << "\n";
+        }
+        else
+        {
+            Outfile << file_line << std::endl;
+        }
+    }
+    Outfile << std::endl;
+    Outfile.close();
+   
+    system("C:\\Users\\wilbe\\Misc\\Nomad\\nomad.3.9.1\\bin\\nomad.exe C:\\Users\\wilbe\\Misc\\Nomad\\nomad.3.9.1\\bin\\param.txt");
+
+    
+    */
         //paramètre en entrée d’un instance : débit à repartir, élévation en amont, limitation eventuelle pour chaque turbine
 
         int DebitTotal = 0;
@@ -54,10 +115,10 @@ int main()
         DebitTotal = std::atoi("string");
 
         ElevAm = 137.89;
-        DebitTotal = 561.26;
+        DebitTotal = 541.69;
         
-        MaxQ1 = 0;
-        MaxQ2 = 160;
+        MaxQ1 = 160;
+        MaxQ2 = 0;
         MaxQ3 = 160;
         MaxQ4 = 160;
         MaxQ5 = 160;
@@ -285,27 +346,27 @@ int main()
         std::cout << ElevAm << "\n";
         std::cout << DebitTotal << "\n";
 
-        std::cout << ElevAv / ElevAvReel * 100 << "\n";
+        std::cout << maxP1  << "\n";
 
-        std::cout << (int)(maxQ1 / Q1Reel * 100 ) << " " << (int)(GetP1(ChuteNette, maxQ1) / P1Reel * 100 )<<  "\n";
+        std::cout << (int)(maxQ1  ) << " " << (int)(GetP1(ChuteNette, maxQ1) )<<  "\n";
 
         int tempQ = DebitTotal - maxQ1;
         if (MaxQ1 == 0)
         {
             tempQ = std::min(DebitTotal, PrevSommeMaximum);
         }
-        std::cout << (int)( maxetape2.find(tempQ)->second.first / Q2Reel * 100 ) <<" " << (int)(GetP2(ChuteNette, maxetape2.find(tempQ)->second.first) / P2Reel * 100) << "\n";
+        std::cout << (int)( maxetape2.find(tempQ)->second.first ) <<" " << (int)(GetP2(ChuteNette, maxetape2.find(tempQ)->second.first) ) << "\n";
 
 
         tempQ = tempQ - maxetape2.find(tempQ)->second.first;
         
-        std::cout << (int)(maxetape3.find(tempQ)->second.first / Q3Reel * 100) << " " << (int)(GetP3(ChuteNette, maxetape3.find(tempQ)->second.first) / P3Reel * 100) << "\n";
+        std::cout << (int)(maxetape3.find(tempQ)->second.first ) << " " << (int)(GetP3(ChuteNette, maxetape3.find(tempQ)->second.first) ) << "\n";
 
         tempQ = tempQ - maxetape3.find(tempQ)->second.first;
-        std::cout << (int)(maxetape4.find(tempQ)->second.first / Q4Reel * 100) << " " << (int)(GetP4(ChuteNette, maxetape4.find(tempQ)->second.first) / P4Reel * 100) << "\n";
+        std::cout << (int)(maxetape4.find(tempQ)->second.first) << " " << (int)(GetP4(ChuteNette, maxetape4.find(tempQ)->second.first) ) << "\n";
 
         tempQ = tempQ - maxetape4.find(tempQ)->second.first;
-        std::cout << (int)(tempQ / Q5Reel * 100) << " " << (int)(GetP5(ChuteNette, tempQ) / P5Reel * 100) << "\n";
+        std::cout << (int)(tempQ ) << " " << (int)(GetP5(ChuteNette, tempQ) ) << "\n";
 
         /*
         std::cout << "\n";
